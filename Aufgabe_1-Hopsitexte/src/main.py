@@ -5,6 +5,8 @@ import threading
 import time
 import re
 
+re_input = "" #erstelle Variable re_input
+input = "" #   erstelle Variable input (notwendig da globale Variable)
 
 # Event, um die Initialisierung von input zu signalisieren
 input_initialized = threading.Event()
@@ -44,34 +46,40 @@ def GUI():
         re_input = re.sub('[^A-Za-zäöüÄÖÜßẞ]', '', input) # remove all non-letter characters
         app.update() # update the GUI
 
-def Test():
+"""def Test():
     input_initialized.wait() # wartet bis input initialisiert ist
     print("Ready to test")
     while True:
-        global input
-        global re_input  # Deklariere re_input als global
         print(input)
         print("RE:------>")
         print(re_input)
-        time.sleep(2)
+        time.sleep(2)"""
 
 def check_hopsi():
+    time.sleep(1)
     input_initialized.wait() # wartet bis input initialisiert ist
-    global re_input
-    lt_re_input = re_input.split()
+    not_finished = True #setze Variiable not_finished auf True
+    Sprungpostion = 0
+    Stelle = 0
     while True:
-        print(lt_re_input)
-        for i in re_input:
-            print(i)
-            print(sprungweite(i))
+        while not_finished == True:
+            lt_re_input = re_input.split()
+            print(lt_re_input)
+            print(sprungweite(lt_re_input[Stelle]))
+            if Sprungpostion + sprungweite(lt_re_input[Stelle]) + Stelle > len(lt_re_input):
+                print("Ende erreicht")
+                not_finished = False
+        time.sleep(4)
+        not_finished = True
+
 
 
 
 t1 = threading.Thread(target=GUI) 
-t2 = threading.Thread(target=Test)
+#t2 = threading.Thread(target=Test)
 t3 = threading.Thread(target=check_hopsi)
 t1.start()
-t2.start()
+#t2.start()
 t3.start()
 
 
