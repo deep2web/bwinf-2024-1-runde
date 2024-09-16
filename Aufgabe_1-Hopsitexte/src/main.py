@@ -11,6 +11,9 @@ import re
 
 re_input = "" #erstelle Variable re_input
 input = "" #   erstelle Variable input (notwendig da globale Variable)
+abstand_endpositionen = 0 #erstelle Variable abstand_endpositionen
+
+
 
 # Event, um die Initialisierung von input zu signalisieren
 input_initialized = threading.Event()
@@ -20,8 +23,6 @@ def sprungweite(buchstabe):
     alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ä", "ö", "ü", "ß"]
     return alphabet.index(buchstabe) + 1
 
-
-print(sprungweite("ß"))
 
 
 
@@ -41,26 +42,31 @@ def GUI():
     # scrolled text with autohide vertical scrollbar
     st = ScrolledText(app, padding=20, height=10, autohide=True)
     st.pack(fill=BOTH, expand=YES)
-    input_initialized.set() # setzt Signal, dass Variable input initialisiert ist
-    # add text
-    st.insert(END, 'Insert your text here.')
+    # input_initialized.set() # setzt Signal, dass Variable input initialisiert ist
+    st.insert(END, 'Insert your text here.') # Default Text
+  
+    
     
     meter = ttk.Meter(
-        metersize=180,
+        metersize=260,
         padding=5,
         amountused=25,
+        amounttotal=30,
+        meterthickness=20,
         metertype="semi",
         subtext="Abstand Endpositionen",
-        interactive=True,
+        interactive=False,
         )
     meter.pack()
 
-    meter.configure(amountused = 50) #abstand_endpositione
-
+    #meter.configure(amountused = 50) #abstand_endpositione
+    t2_check_hopsi.start() # rufe, nachdem die GUI initialisiert wurde, die Funktion zur Überprüfung des Hopsitextes auf
     while True:
         input = st.get("1.0",END) # get the text from the text field
         re_input = re.sub('[^A-Za-zäöüÄÖÜßẞ]', '', input) # remove all non-letter characters
+        meter.configure(amountused = abstand_endpositionen) # Nutze Wert aus der Variable von abstand_endpositionen
         app.update() # update the GUI
+        
 
 
 def check_hopsi(Startposition):
@@ -69,15 +75,15 @@ def check_hopsi(Startposition):
 
     while not_finished == True:
         lt_re_input = list(re_input.lower()) # Wandelt ipnut in Liste um und wandelt alle Buchstaben in Kleinbuchstaben um
-        print(lt_re_input)
+        #print(lt_re_input)
         #print(sprungweite(lt_re_input[Stelle]))
             
         if sprungweite(lt_re_input[Stelle]) + Stelle < len(lt_re_input):
             Stelle = Stelle + sprungweite(lt_re_input[Stelle])
         else:
-            print("Ende erreicht")
+            #print("Ende erreicht")
             not_finished = False
-            print(Stelle, lt_re_input[Stelle])
+            #print(Stelle, lt_re_input[Stelle])
 
     return Stelle
 
@@ -90,11 +96,14 @@ def berechne_differenz(Wert1, Wert2): #Funktion zur Berechnung der Differenz von
 
 
 def check_all():
+    time.sleep(0.5)
+    global abstand_endpositionen
     while True:
-        time.sleep(0.5)
+        time.sleep(0.1)
         check_hopsi(0)
         check_hopsi(1)
         abstand_endpositionen = berechne_differenz(check_hopsi(0), check_hopsi(1))
+
         # print(berechne_differenz(check_hopsi(0), check_hopsi(1)))
 
 
@@ -106,9 +115,9 @@ def check_all():
 
 t1 = threading.Thread(target=GUI) 
 #t2 = threading.Thread(target=Test)
-t3 = threading.Thread(target=check_all)
+t2_check_hopsi = threading.Thread(target=check_all)
 t1.start()
 #t2.start()
-t3.start()
+#t2_check_hopsi.start()
 
 
