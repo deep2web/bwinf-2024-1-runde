@@ -49,33 +49,41 @@ def GUI():
 
 
 def check_hopsi(Startposition):
-    time.sleep(1)
-    input_initialized.wait() # wartet bis input initialisiert ist
     not_finished = True #setze Variiable not_finished auf True
     Stelle = Startposition
 
 
-    while True:
-        while not_finished == True:
-            lt_re_input = list(re_input.lower()) # Wandelt ipnut in Liste um und wandelt alle Buchstaben in Kleinbuchstaben um
-            print(lt_re_input)
-            #print(sprungweite(lt_re_input[Stelle]))
+
+    while not_finished == True:
+        lt_re_input = list(re_input.lower()) # Wandelt ipnut in Liste um und wandelt alle Buchstaben in Kleinbuchstaben um
+        print(lt_re_input)
+        #print(sprungweite(lt_re_input[Stelle]))
 
             
-            if sprungweite(lt_re_input[Stelle]) + Stelle < len(lt_re_input):
-                Stelle = Stelle + sprungweite(lt_re_input[Stelle])
-            else:
-                print("Ende erreicht")
-                not_finished = False
-                print(Stelle, lt_re_input[Stelle])
-        time.sleep(4)
-        not_finished = True
+        if sprungweite(lt_re_input[Stelle]) + Stelle < len(lt_re_input):
+            Stelle = Stelle + sprungweite(lt_re_input[Stelle])
+        else:
+            print("Ende erreicht")
+            not_finished = False
+            print(Stelle, lt_re_input[Stelle])
+
+    return Stelle
+
+def berechne_differenz(Wert1, Wert2): #Funktion zur Berechnung der Differenz von zwei positiven Werten
+    if Wert1 > Wert2:
+        Wert_diff = Wert1 - Wert2
+    else:
+        Wert_diff = Wert2 - Wert1
+    return Wert_diff
 
 
 def check_all():
+    time.sleep(0.5)
     check_hopsi(0)
     check_hopsi(1)
     check_hopsi(10)
+    print(berechne_differenz(5, 5))
+
 
 
 t1 = threading.Thread(target=GUI) 
