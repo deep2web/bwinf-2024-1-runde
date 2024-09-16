@@ -1,3 +1,6 @@
+from PIL import Image       # Image.CUBIC is deprecated (replaced by Image.BICUBIC)
+Image.CUBIC = Image.BICUBIC # https://stackoverflow.com/a/76717474
+
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 from ttkbootstrap.scrolled import ScrolledText
@@ -41,6 +44,18 @@ def GUI():
     input_initialized.set() # setzt Signal, dass Variable input initialisiert ist
     # add text
     st.insert(END, 'Insert your text here.')
+    
+    meter = ttk.Meter(
+        metersize=180,
+        padding=5,
+        amountused=25,
+        metertype="semi",
+        subtext="Abstand Endpositionen",
+        interactive=True,
+        )
+    meter.pack()
+
+    meter.configure(amountused = 50) #abstand_endpositione
 
     while True:
         input = st.get("1.0",END) # get the text from the text field
@@ -52,13 +67,10 @@ def check_hopsi(Startposition):
     not_finished = True #setze Variiable not_finished auf True
     Stelle = Startposition
 
-
-
     while not_finished == True:
         lt_re_input = list(re_input.lower()) # Wandelt ipnut in Liste um und wandelt alle Buchstaben in Kleinbuchstaben um
         print(lt_re_input)
         #print(sprungweite(lt_re_input[Stelle]))
-
             
         if sprungweite(lt_re_input[Stelle]) + Stelle < len(lt_re_input):
             Stelle = Stelle + sprungweite(lt_re_input[Stelle])
@@ -78,11 +90,17 @@ def berechne_differenz(Wert1, Wert2): #Funktion zur Berechnung der Differenz von
 
 
 def check_all():
-    time.sleep(0.5)
-    check_hopsi(0)
-    check_hopsi(1)
-    check_hopsi(10)
-    print(berechne_differenz(5, 5))
+    while True:
+        time.sleep(0.5)
+        check_hopsi(0)
+        check_hopsi(1)
+        abstand_endpositionen = berechne_differenz(check_hopsi(0), check_hopsi(1))
+        # print(berechne_differenz(check_hopsi(0), check_hopsi(1)))
+
+
+
+
+
 
 
 
