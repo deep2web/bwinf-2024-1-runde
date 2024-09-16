@@ -10,7 +10,7 @@ import re
 
 
 re_input = "" #erstelle Variable re_input
-input = "" #   erstelle Variable input (notwendig da globale Variable)
+input = ""  #erstelle Variable input (notwendig da globale Variable)
 abstand_endpositionen = 0 #erstelle Variable abstand_endpositionen
 
 
@@ -31,13 +31,7 @@ def GUI():
     global input
     global re_input
 
-    app = ttk.Window(title="My Application", themename="superhero")
-
-    b1 = ttk.Button(app, text="Button 1", bootstyle=SUCCESS)
-    b1.pack(side=LEFT, padx=5, pady=10)
-
-    b2 = ttk.Button(app, text="Button 2", bootstyle=(INFO, OUTLINE))
-    b2.pack(side=LEFT, padx=5, pady=10)
+    app = ttk.Window(title="Hopsi-Checker", themename="united")
 
     # scrolled text with autohide vertical scrollbar
     st = ScrolledText(app, padding=20, height=10, autohide=True)
@@ -56,34 +50,41 @@ def GUI():
         metertype="semi",
         subtext="Abstand Endpositionen",
         interactive=False,
+        bootstyle="info",
         )
     meter.pack()
 
-    #meter.configure(amountused = 50) #abstand_endpositione
-    t2_check_hopsi.start() # rufe, nachdem die GUI initialisiert wurde, die Funktion zur Überprüfung des Hopsitextes auf
+    #t2_check_hopsi.start() # rufe, nachdem die GUI initialisiert wurde, die Funktion zur Überprüfung des Hopsitextes auf
     while True:
         input = st.get("1.0",END) # get the text from the text field
         re_input = re.sub('[^A-Za-zäöüÄÖÜßẞ]', '', input) # remove all non-letter characters
         meter.configure(amountused = abstand_endpositionen) # Nutze Wert aus der Variable von abstand_endpositionen
+        if abstand_endpositionen <= 5:
+            meter.configure(bootstyle="danger")
+        if abstand_endpositionen > 15:
+            meter.configure(bootstyle="success")
+        else:
+            meter.configure(bootstyle="info")
         app.update() # update the GUI
         
 
 
 def check_hopsi(Startposition):
+    global abstand_endpositionen
     not_finished = True #setze Variiable not_finished auf True
     Stelle = Startposition
 
     while not_finished == True:
         lt_re_input = list(re_input.lower()) # Wandelt ipnut in Liste um und wandelt alle Buchstaben in Kleinbuchstaben um
-        #print(lt_re_input)
-        #print(sprungweite(lt_re_input[Stelle]))
-            
-        if sprungweite(lt_re_input[Stelle]) + Stelle < len(lt_re_input):
-            Stelle = Stelle + sprungweite(lt_re_input[Stelle])
+        if len(lt_re_input) <= 1:
+            abstand_endpositionen = 0
+            time.sleep(0.5)
         else:
-            #print("Ende erreicht")
-            not_finished = False
-            #print(Stelle, lt_re_input[Stelle])
+            if sprungweite(lt_re_input[Stelle]) + Stelle < len(lt_re_input):
+                Stelle = Stelle + sprungweite(lt_re_input[Stelle])
+            else:
+                not_finished = False
+        # #print(Stelle, lt_re_input[Stelle])
 
     return Stelle
 
@@ -113,11 +114,9 @@ def check_all():
 
 
 
-t1 = threading.Thread(target=GUI) 
-#t2 = threading.Thread(target=Test)
+t1_GUI = threading.Thread(target=GUI) 
 t2_check_hopsi = threading.Thread(target=check_all)
-t1.start()
-#t2.start()
-#t2_check_hopsi.start()
+t1_GUI.start()
+t2_check_hopsi.start()
 
 
