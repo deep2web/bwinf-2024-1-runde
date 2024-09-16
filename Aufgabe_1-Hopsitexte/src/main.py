@@ -63,12 +63,17 @@ def check_hopsi():
     Stelle = 0
     while True:
         while not_finished == True:
-            lt_re_input = re_input.split()
+            lt_re_input = list(re_input.lower()) # Wandelt inut in Liste un wandelt alle Buchstaben in Kleinbuchstaben um
             print(lt_re_input)
-            print(sprungweite(lt_re_input[Stelle]))
-            if Sprungpostion + sprungweite(lt_re_input[Stelle]) + Stelle > len(lt_re_input):
+            #print(sprungweite(lt_re_input[Stelle]))
+
+            
+            if Sprungpostion + sprungweite(lt_re_input[Stelle]) + Stelle < len(lt_re_input):
+                Stelle = Stelle + sprungweite(lt_re_input[Stelle])
+            else:
                 print("Ende erreicht")
                 not_finished = False
+                print(Stelle)
         time.sleep(4)
         not_finished = True
 
