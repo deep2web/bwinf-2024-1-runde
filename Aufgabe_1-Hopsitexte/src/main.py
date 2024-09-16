@@ -5,6 +5,7 @@ import threading
 import time
 import re
 
+
 re_input = "" #erstelle Variable re_input
 input = "" #   erstelle Variable input (notwendig da globale Variable)
 
@@ -46,43 +47,40 @@ def GUI():
         re_input = re.sub('[^A-Za-zäöüÄÖÜßẞ]', '', input) # remove all non-letter characters
         app.update() # update the GUI
 
-"""def Test():
-    input_initialized.wait() # wartet bis input initialisiert ist
-    print("Ready to test")
-    while True:
-        print(input)
-        print("RE:------>")
-        print(re_input)
-        time.sleep(2)"""
 
-def check_hopsi():
+def check_hopsi(Startposition):
     time.sleep(1)
     input_initialized.wait() # wartet bis input initialisiert ist
     not_finished = True #setze Variiable not_finished auf True
-    Sprungpostion = 0
-    Stelle = 0
+    Stelle = Startposition
+
+
     while True:
         while not_finished == True:
-            lt_re_input = list(re_input.lower()) # Wandelt inut in Liste un wandelt alle Buchstaben in Kleinbuchstaben um
+            lt_re_input = list(re_input.lower()) # Wandelt ipnut in Liste um und wandelt alle Buchstaben in Kleinbuchstaben um
             print(lt_re_input)
             #print(sprungweite(lt_re_input[Stelle]))
 
             
-            if Sprungpostion + sprungweite(lt_re_input[Stelle]) + Stelle < len(lt_re_input):
+            if sprungweite(lt_re_input[Stelle]) + Stelle < len(lt_re_input):
                 Stelle = Stelle + sprungweite(lt_re_input[Stelle])
             else:
                 print("Ende erreicht")
                 not_finished = False
-                print(Stelle)
+                print(Stelle, lt_re_input[Stelle])
         time.sleep(4)
         not_finished = True
 
 
+def check_all():
+    check_hopsi(0)
+    check_hopsi(1)
+    check_hopsi(10)
 
 
 t1 = threading.Thread(target=GUI) 
 #t2 = threading.Thread(target=Test)
-t3 = threading.Thread(target=check_hopsi)
+t3 = threading.Thread(target=check_all)
 t1.start()
 #t2.start()
 t3.start()
