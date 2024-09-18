@@ -29,3 +29,9 @@ rubber.cache
 
 ## Python Virtualenv
 /.venv/
+
+## Python compile
+/build/
+/dist/
+output/
+main.spec
