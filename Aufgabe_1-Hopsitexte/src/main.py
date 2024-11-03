@@ -14,12 +14,7 @@ input = ""  #erstelle Variable input (notwendig da globale Variable)
 abstand_endpositionen = 0 #erstelle Variable abstand_endpositionen
 
 
-
-# Event, um die Initialisierung von input zu signalisieren
-input_initialized = threading.Event()
-
-
-def sprungweite(buchstabe):
+def sprungweite(buchstabe): # Nutze einen Index um die Sprungweite einen Buchstabens ueber die Position im Index +1 bestimmen zu können
     alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ä", "ö", "ü", "ß"]
     return alphabet.index(buchstabe) + 1
 
@@ -32,20 +27,13 @@ def GUI():
     global re_input
 
     app = ttk.Window(title="Hopsi-Checker", themename="united")
-
-    # scrolled text with autohide vertical scrollbar
-    st = ScrolledText(app, padding=20, height=10, autohide=True)
-    st.pack(fill=BOTH, expand=YES)
-    # input_initialized.set() # setzt Signal, dass Variable input initialisiert ist
-    st.insert(END, 'Insert your text here.') # Default Text
-  
-    
-    
-    meter = ttk.Meter(
+    st = ScrolledText(app, padding=20, height=10, autohide=True) # erstelle Textfeld
+    st.pack(fill=BOTH, expand=YES)    
+    meter = ttk.Meter( # erstelle Radialanzeige
         metersize=260,
         padding=5,
         amountused=25,
-        amounttotal=30,
+        amounttotal=29,
         meterthickness=20,
         metertype="semi",
         subtext="Abstand Endpositionen",
@@ -54,14 +42,13 @@ def GUI():
         )
     meter.pack()
 
-    #t2_check_hopsi.start() # rufe, nachdem die GUI initialisiert wurde, die Funktion zur Überprüfung des Hopsitextes auf
     while True:
-        input = st.get("1.0",END) # get the text from the text field
-        re_input = re.sub('[^A-Za-zäöüÄÖÜßẞ]', '', input) # remove all non-letter characters
+        input = st.get("1.0",END) # hole den Text aus dem Textfeld und schreibe ihn in die variable input
+        re_input = re.sub('[^A-Za-zäöüÄÖÜßẞ]', '', input) # Entfernt alle nicht-Buchstaben
         meter.configure(amountused = abstand_endpositionen) # Nutze Wert aus der Variable von abstand_endpositionen
-        if abstand_endpositionen <= 5:
+        if abstand_endpositionen <= 5: # setze Farbe der Radialanzeige auf Rot wenn abstand_endpositionen <= 5
             meter.configure(bootstyle="danger")
-        if abstand_endpositionen > 15:
+        elif abstand_endpositionen >= 15: # setze Farbe der Radialanzeige auf Grün wenn abstand_endpositionen >= 15
             meter.configure(bootstyle="success")
         else:
             meter.configure(bootstyle="info")
@@ -84,9 +71,8 @@ def check_hopsi(Startposition):
                 Stelle = Stelle + sprungweite(lt_re_input[Stelle])
             else:
                 not_finished = False
-        # #print(Stelle, lt_re_input[Stelle])
-
     return Stelle
+
 
 def berechne_differenz(Wert1, Wert2): #Funktion zur Berechnung der Differenz von zwei positiven Werten
     if Wert1 > Wert2:
@@ -104,13 +90,6 @@ def check_all():
         check_hopsi(0)
         check_hopsi(1)
         abstand_endpositionen = berechne_differenz(check_hopsi(0), check_hopsi(1))
-
-        # print(berechne_differenz(check_hopsi(0), check_hopsi(1)))
-
-
-
-
-
 
 
 
