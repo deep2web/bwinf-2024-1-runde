@@ -38,35 +38,12 @@ def GUI():
     st.pack(fill=BOTH, expand=YES)
     # input_initialized.set() # setzt Signal, dass Variable input initialisiert ist
     st.insert(END, 'Insert your text here.') # Default Text
-  
-    
-    
-    """meter = ttk.Meter(
-        metersize=260,
-        padding=5,
-        amountused=25,
-        amounttotal=30,
-        meterthickness=20,
-        metertype="semi",
-        subtext="Abstand Endpositionen",
-        interactive=False,
-        bootstyle="info",
-        )
-    meter.pack()"""
-
-    label = ttk.Label(app, text=winner, bootstyle="info")
+    label = ttk.Label(app, text=winner, bootstyle="info", font=("", 50))
 
     #t2_check_hopsi.start() # rufe, nachdem die GUI initialisiert wurde, die Funktion zur Überprüfung des Hopsitextes auf
     while True:
         input = st.get("1.0",END) # get the text from the text field
         re_input = re.sub('[^A-Za-zäöüÄÖÜßẞ]', '', input) # remove all non-letter characters
-        """meter.configure(amountused = abstand_endpositionen) # Nutze Wert aus der Variable von abstand_endpositionen
-        if abstand_endpositionen <= 5:
-            meter.configure(bootstyle="danger")
-        if abstand_endpositionen > 15:
-            meter.configure(bootstyle="success")
-        else:
-            meter.configure(bootstyle="info")"""
         label.pack()
         label.configure(text = winner) # update label winner
     # label.delete(0, ttk.END)
@@ -107,37 +84,14 @@ def check_hopsi(Startposition):
                 not_finished = False
     return Stelle
 
-"""def berechne_differenz(Wert1, Wert2): #Funktion zur Berechnung der Differenz von zwei positiven Werten
-    if Wert1 > Wert2:
-        Wert_diff = Wert1 - Wert2
-    else:
-        Wert_diff = Wert2 - Wert1
-    return Wert_diff"""
-
-
-"""def check_all():
-    time.sleep(0.5)
-    global abstand_endpositionen
-    while True:
-        time.sleep(0.1)
-        check_hopsi(0)
-        check_hopsi(1)
-        abstand_endpositionen = berechne_differenz(check_hopsi(0), check_hopsi(1))"""
-
-
-
-
-
 
 
 
 
 
 t1_GUI = threading.Thread(target=GUI) 
-# t2_check_hopsi = threading.Thread(target=check_all)
 t3_check_win = threading.Thread(target=check_win)
 t1_GUI.start()
-# t2_check_hopsi.start()
 t3_check_win.start()
 
 
