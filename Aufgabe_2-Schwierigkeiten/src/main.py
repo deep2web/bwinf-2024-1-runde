@@ -1,26 +1,30 @@
-import ttkbootstrap as ttk
-from ttkbootstrap.constants import *
 
 
-def GUI():
-    app = ttk.Window(title="Hopsi-Checker", themename="united")
+klausur_1 = ["B", "A", "D", "F"]
+klausur_2= ["D", "F", "G"]
+klausur_3 =["A", "E", "D", "C"]
+klausur_4 = ["G", "F", "C"]
+anzahl_klausuren = 4
 
-    en_klausur = ttk.Entry(app, bootstyle="warning")
+gesamte_aufgaben = []
 
-    en_klausur.pack(side=RIGHT, padx=5, pady=10)
+gewuenschte_aufgaben = ["B", "C", "D", "E", "F"]
+
+def ordne_aufgaben():
+        for i in gewuenschte_aufgaben:
+             if gewuenschte_aufgaben.index(i) < len(gewuenschte_aufgaben)-1:
+                if i in klausur_1:
+                     for j in range(len(gewuenschte_aufgaben)-gewuenschte_aufgaben.index(i)):
+                        if gewuenschte_aufgaben[gewuenschte_aufgaben.index(i)+j] in klausur_1:
+                            if klausur_1.index(i) <= klausur_1.index(gewuenschte_aufgaben[gewuenschte_aufgaben.index(i)+j]):
+                                print("Test")     
 
 
-    sw_klausur = ttk.Entry(app, bootstyle="warning")
-
-    sw_klausur.pack(side=RIGHT, padx=5, pady=10)
-
-
-    b1 = ttk.Button(app, text="+", bootstyle=SUCCESS)
-    b1.pack(side=LEFT, padx=5, pady=10)
+def read_file(file_name):
+    with open(file_name, 'r') as file:
+        return file.read()
     
 
-    app.mainloop()
+ordne_aufgaben()
 
 
-
-GUI()
