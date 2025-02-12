@@ -8,6 +8,11 @@
 \usepackage{graphicx}
 %\usepackage{marvosym} % Sonderzeichen
 
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
+\algrenewcommand{\Return}{\State\algorithmicreturn~} %for return in new line
+
 % Die nächsten vier Felder bitte anpassen:
 \newcommand{\Aufgabe}{Aufgabe 1: Hopsitexte}      % Aufgabennummer und Aufgabennamen angeben
 \newcommand{\TeamId}{00578}                       % Team-ID aus dem PMS angeben
@@ -57,29 +62,47 @@ pdfauthor={Frederik Hamann}
 
 
 \section{Lösungsidee}
-Die Idee war Zara beim Verfassen zu unterstützen, indem ich ein Programm entwickle, welches 
+Die Idee war, Zara beim Verfassen zu unterstützen, indem ich ein Programm entwickle, welches 
 als Texteditor dient und in Echtzeit den Abstand zwischen den Endpositionen anzeigt.
-Dies ist ausreichend hilfreich, da Hopsitexte zwar durchaus in sich aufeinander aufbauen, allerdings reicht auch eine kleine Veränderung aus, um die Endpostionen drastisch zu verändern.\\
-Dadurch ist eine Planung des Hopsitextes bereits beim schreiben nicht zwingend notwendig.
+Dies ist ausreichend hilfreich, da Hopsitexte zwar durchaus in sich aufeinander aufbauen, allerdings reicht auch eine kleine Veränderung aus, um die Endpositionen drastisch zu verändern.\\
+Dadurch ist eine Planung des Hopsitextes bereits beim Schreiben nicht zwingend notwendig.
 Daher könnte Zara, sofern sie mit dem berechneten Abstand nicht zufrieden ist, beispielsweise
  Wörter wie ,,diese'' zu ,,jene'' oder ,,gut'' zu ,,toll''. Hierbei müsste bei den genannten 
  Beispielen auch die Bedeutung nicht gravierend geändert werden.
 
 \section{Umsetzung}
-Es wird mithilfe der Python Bibliothek „ttkbootstrap“ ein GUI erstellt, welche ein Textfeld und ein 
-und eine Radialanzeige enthält. Das Textfeld dient der Eingabe des Hopsitextes, während die Radialanzeige
-zur Darstellung des Abstandes zwischen den Endpostionen genutzt wird. Es hat einen Anzeigebereich von 0 bis 
+Es wird mithilfe der Python-Bibliothek „ttkbootstrap“ ein GUI erstellt, welches ein Textfeld und 
+eine Radialanzeige enthält. Das Textfeld dient der Eingabe des Hopsitextes, während die Radialanzeige
+zur Darstellung des Abstands zwischen den Endpositionen genutzt wird. Es hat einen Anzeigebereich von 0 bis 
 29. Der Anzeigebereich wurde auf 29 berechnet, da der höchste Sprungwert bei 30 liegt und der Abstand somit
 nur bei max. 29 liegen kann, da der 2. Hopser einen Buchstaben nach dem 1. Texthopser startet und somit in einem Fall,
- wo auf ein ,,ß'' 29 mal ,,ä'' folgen würde, der Abstand 29 betrüge.
+ wo auf ein ,,ß'' 29 mal ,,ä'' folgen würde, der Abstand 29 betrüge.\\
 
+\begin{algorithmic}
+    \Function{Berechne Abstand Endpositionen}{$\vars{Wert1}, \vars{Wert2}$}
+        \If {$Wert1 > Wert2 $}
+            \State $Wert\_diff \gets Wert1 - Wert2$
+        \Else
+            \State $Wert\_diff \gets Wert2 - Wert1$
+        \EndIf
+        \Return $Wert\_diff$
+    \EndFunction
+\end{algorithmic}\\
 
-
-
+\begin{algorithmic}
+    \Function{check\_hopsi}{$\vars{Startposition}$}
+        \If {$input = \leq 1$}
+            \State $abstand\_endpositionen\gets 0$ 
+        \Else
+        \If {$sprungweite \leq 2$}
+            \State $i\gets i+k$
+    \EndIf
+    \Return $Stelle$
+\end{algorithmic}
 
 \section{Beispiele}
 Genügend Beispiele einbinden! Die Beispiele von der BwInf-Webseite sollten hier diskutiert werden, aber auch eigene Beispiele 
-sind sehr gut besonders wenn sie Spezialfälle abdecken. Aber bitte nicht 30 Seiten Programmausgabe hier einfügen!
+sind sehr gut, besonders wenn sie Spezialfälle abdecken. Aber bitte nicht 30 Seiten Programmausgabe hier einfügen!
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.7\linewidth]{Beispiel_BWINF_2}
@@ -108,7 +131,7 @@ input = ""  #erstelle Variable input (notwendig da globale Variable)
 abstand_endpositionen = 0 #erstelle Variable abstand_endpositionen
 
 
-def sprungweite(buchstabe): # Nutze einen Index um die Sprungweite einen Buchstabens ueber die Position im Index +1 bestimmen zu koennen
+def sprungweite(buchstabe): # Nutze einen Index um die Sprungweite einen Buchstabens ueber die Position im Index +1 bestimmen zu können
     alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ä", "ö", "ü", "ß"]
     return alphabet.index(buchstabe) + 1
 
@@ -137,12 +160,12 @@ def GUI():
     meter.pack()
 
     while True:
-        input = st.get("1.0",END) # get the text from the text field
-        re_input = re.sub('[^A-Za-zäöüÄÖÜßẞ]', '', input) # remove all non-letter characters
+        input = st.get("1.0",END) # hole den Text aus dem Textfeld und schreibe ihn in die variable input
+        re_input = re.sub('[^A-Za-zäöüÄÖÜßẞ]', '', input) # Entfernt alle nicht-Buchstaben
         meter.configure(amountused = abstand_endpositionen) # Nutze Wert aus der Variable von abstand_endpositionen
-        if abstand_endpositionen <= 5:
+        if abstand_endpositionen <= 5: # setze Farbe der Radialanzeige auf Rot wenn abstand_endpositionen <= 5
             meter.configure(bootstyle="danger")
-        if abstand_endpositionen > 15:
+        elif abstand_endpositionen >= 15: # setze Farbe der Radialanzeige auf Grün wenn abstand_endpositionen >= 15
             meter.configure(bootstyle="success")
         else:
             meter.configure(bootstyle="info")
@@ -191,10 +214,5 @@ t1_GUI = threading.Thread(target=GUI)
 t2_check_hopsi = threading.Thread(target=check_all)
 t1_GUI.start()
 t2_check_hopsi.start()
-
-
-
 \end{python}
-
-
 \end{document}

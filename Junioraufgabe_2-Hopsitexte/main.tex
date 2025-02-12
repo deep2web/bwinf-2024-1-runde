@@ -1,0 +1,106 @@
+% Document is compatible with XeLaTex only. Don't use PDFLaTex!
+
+\documentclass[a4paper,10pt,ngerman]{scrartcl}
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\usepackage[a4paper,margin=2.5cm,footskip=0.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{float} %For big H
+
+%Für Algorithmen
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
+ \usepackage{amsmath}
+\algrenewcommand{\Return}{\State\algorithmicreturn~} %for return in new line
+
+% Die nächsten vier Felder bitte anpassen:
+\newcommand{\Aufgabe}{Junioraufgabe 2: Hopsitexte}      % Aufgabennummer und Aufgabennamen angeben
+\newcommand{\TeamId}{00578}                       % Team-ID aus dem PMS angeben
+\newcommand{\TeamName}{Frederik Hamann}           % Team-Namen angeben
+\newcommand{\Namen}{Frederik Hamann}              % Namen der Bearbeiter/-innen dieser Aufgabe angeben
+
+% Kopf- und Fußzeilen
+\usepackage{scrlayer-scrpage}
+\usepackage{lastpage}
+\setkomafont{pageheadfoot}{\large\textrm}
+\lohead{\Aufgabe}
+\rohead{Team-ID: \TeamId}
+\cfoot*{\thepage{}/\pageref{LastPage}}
+
+% Position des Titels
+\usepackage{titling}
+\setlength{\droptitle}{-1.0cm}
+% Für Python
+\usepackage{pythonhighlight}
+
+%Für PDF-Metadaten
+\usepackage{hyperref}
+\hypersetup{
+pdftitle={Aufgabe 1 - Hopsitexte},
+pdfsubject={Hopsitexte},
+pdfauthor={Frederik Hamann}
+}
+\usepackage{cleveref}
+
+% Diese beiden Pakete müssen zuletzt geladen werden
+%\usepackage{hyperref} % Anklickbare Links im Dokument
+
+% Daten für die Titelseite
+\title{\textbf{\Huge\Aufgabe}}
+\author{\LARGE Team-ID: \LARGE \TeamId \\\\
+	\LARGE Team-Name: \LARGE \TeamName \\\\
+	\LARGE Bearbeiter/-innen dieser Aufgabe: \\ 
+	\LARGE \Namen\\\\}
+\date{\LARGE\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\vspace{0.5cm}
+
+
+\section{Lösungsidee}
+Tatsächlich habe ich erst, nachdem ich die Aufgabe 1 aus dem Aufgabenblatt bearbeitet habe, festgestellt, dass ich die Junioraufgaben auch bearbeiten darf, daher habe ich diese Aufgabe erst nach dem Bearbeiten von Aufgabe 1 gelöst, wodruch ich im Prinzip das Programm aus Aufabe 1 für die Aufgabe wieder verwendet habe und nur in Teilaspekten gekürzt habe und den Algorithmus welcher in Aufgabe 1 von mir verwendet wird nun so nutze, dass er anstatt den Abstand von Hopser 1 und 2 zu berechnen, er untersucht ob Hopser 1 oder 2 weiter gekommen ist.
+
+
+\begin{algorithm}
+\caption{check\_win()}
+\begin{algorithmic}
+    \State \textbf{global} winner
+    \While{\textbf{true}}
+        \State check\_hopsi(hopser\_1)
+        \State check\_hopsi(hopser\_2)
+        \If{check\_hopsi(0) $>$ check\_hopsi(1)}
+            \State winner $\gets$ "Hopser 1 gewinnt!"
+        \ElsIf{check\_hopsi(1) $>$ check\_hopsi(0)}
+            \State winner $\gets$ "Hopser 2 gewinnt!"
+        \Else
+            \State winner $\gets$ "Unentschieden!"
+        \EndIf
+    \EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+\section{Umsetzung}
+Es wird mithilfe der Python-Bibliothek „ttkbootstrap“ ein GUI erstellt, welches ein Textfeld und 
+eine Radialanzeige enthält. Das Textfeld dient der Eingabe des Hopsitextes, während die Radialanzeige
+zur Darstellung des Abstands zwischen den Endpositionen genutzt wird. Es hat einen Anzeigebereich von 0 bis 
+29. Der Anzeigebereich wurde auf 29 berechnet, da der höchste Sprungwert bei 30 liegt und der Abstand somit
+nur bei max. 29 liegen kann, da der 2. Hopser einen Buchstaben nach dem 1. Texthopser startet und somit in einem Fall,
+ wo auf ein ,,ß'' 29 mal ,,a'' folgen würde, der Abstand 29 betrüge (s. Abbildung 3).\\
+
+
+\section{Beispiele}
+Genügend Beispiele einbinden! Die Beispiele von der BwInf-Webseite sollten hier diskutiert werden, aber auch eigene Beispiele 
+sind sehr gut, besonders wenn sie Spezialfälle abdecken. Aber bitte nicht 30 Seiten Programmausgabe hier einfügen!
+
+
+
+
+\section{Quellcode}
+
+
+\end{document}
